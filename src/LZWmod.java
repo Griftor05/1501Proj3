@@ -1,3 +1,5 @@
+import java.util.NoSuchElementException;
+
 /*************************************************************************
  *  Compilation:  javac LZW.java
  *  Execution:    java LZW - < input.txt   (compress)
@@ -12,31 +14,51 @@
 public class LZWmod {
     private static final int R = 256;        // number of input chars
     private static final int L = 4096;       // number of codewords = 2^W
-    private static final int W = 12;         // codeword width
+    private static final int W = 12;         // base codeword width (will get longer as we get more keycodes)
 
     public static void compress() {
-        String input = BinaryStdIn.readString();
         TST<Integer> st = new TST<Integer>();
-        for (int i = 0; i < R; i++)
-            st.put("" + (char) i, i);
-        int code = R+1;  // R is codeword for EOF
-
-        while (input.length() > 0) {
-            String s = st.longestPrefixOf(input);  // Find max prefix match s.
-            BinaryStdOut.write(st.get(s), W);      // Print s's encoding.
-            int t = s.length();
-            if (t < input.length() && code < L)    // Add s to symbol table.
-                st.put(input.substring(0, t + 1), code++);
-            input = input.substring(t);            // Scan past s in input.
+        char mybyte;
+        DLB mydlb = new DLB();
+        // Have to pre-populate with the codewords
+        for(char c = 0; c < 255; c++){
+            String mychar = Character.toString(c);
+            mydlb.add(mychar);
+            st.put(mychar, (int)c);
         }
+
+        StringBuilder s = new StringBuilder();
+        int lookupReturn;
+
+        while (true){
+            try{
+                mybyte = BinaryStdIn.readChar();
+                s.append(mybyte);
+                lookupReturn = mydlb.searchPrefix(s);
+                if(lookupReturn == 0){
+
+                }
+
+
+
+
+                BinaryStdOut.write(st.get(s.toString()), W);      // Print s's encoding.
+            }
+            catch(NoSuchElementException e){
+                // Got to the end of the file
+                break;
+            }
+        }
+
+        // Apparently R is the codeword for EOF
         BinaryStdOut.write(R, W);
         BinaryStdOut.close();
     }
 
 
     public static void expand() {
-        String[] st = new String[L];
         int i; // next available codeword value
+        String[] st = new String[L];
 
         // initialize symbol table with all 1-character strings
         for (i = 0; i < R; i++)
@@ -47,8 +69,8 @@ public class LZWmod {
         String val = st[codeword];
 
         while (true) {
-            BinaryStdOut.write(val);
             codeword = BinaryStdIn.readInt(W);
+            BinaryStdOut.write(val);
             if (codeword == R) break;
             String s = st[codeword];
             if (i == codeword) s = val + val.charAt(0);   // special case hack
@@ -57,7 +79,6 @@ public class LZWmod {
         }
         BinaryStdOut.close();
     }
-
 
 
     public static void main(String[] args) {
