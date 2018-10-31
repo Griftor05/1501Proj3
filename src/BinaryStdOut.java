@@ -184,7 +184,7 @@ public final class BinaryStdOut {
 
 
 
-   /**
+    /**
      * Writes the 64-bit double to standard output.
      * @param x the {@code double} to write.
      */
