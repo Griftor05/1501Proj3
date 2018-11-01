@@ -32,7 +32,7 @@ public class LZWmod {
             W ++;
         }
 
-        writeToTheDebugFile("Wrote " + nlen(W, toWrite) + " or hex " + Integer.toHexString(toWrite) + " or table entry: " + toWrite + "\n");
+        //writeToTheDebugFile("Wrote " + nlen(W, toWrite) + " or hex " + Integer.toHexString(toWrite) + " or table entry: " + toWrite + "\n");
 
         if(toWrite > counter){
             throw new RuntimeException("Houston, we have an encoding issue.");
@@ -153,20 +153,18 @@ public class LZWmod {
         int codeword = BinaryStdIn.readInt(W);
         StringBuilder oldWord = new StringBuilder(st[codeword]);
         BinaryStdOut.write(oldWord.toString());
-        writeToTheDebugFile("Read " + nlen(W, codeword) + " or hex " + Integer.toHexString(codeword) + " or table entry: " + codeword + "\n");
-        counter++;
+        //writeToTheDebugFile("Read " + nlen(W, codeword) + " or hex " + Integer.toHexString(codeword) + " or table entry: " + codeword + "\n");
 
         while (true) {
             // need to check if codeword size has to be biggified
             if(Math.log(counter) / Math.log(2) == W){
                 W ++;
-                //System.out.println("Changed here.");
             }
 
             // Read in the next codeword
             codeword = BinaryStdIn.readInt(W);
             //System.out.println("The " + counter + "th number binary is: " + nlen(W, codeword));
-            writeToTheDebugFile("Read " + nlen(W, codeword) + " or hex " + Integer.toHexString(codeword) + " or table entry: " + codeword + "\n");
+            //writeToTheDebugFile("Read " + nlen(W, codeword) + " or hex " + Integer.toHexString(codeword) + " or table entry: " + codeword + "\n");
 
             StringBuilder newWord;
             if(codeword >= counter){ // This takes care of the case when a value is used immediately after being encoded
