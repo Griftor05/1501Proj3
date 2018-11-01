@@ -1,3 +1,7 @@
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.NoSuchElementException;
 
 /*************************************************************************
@@ -18,6 +22,7 @@ public class LZWmod {
     private static int W = startW;         // base codeword width (will get longer as we get more keycodes)
     private static int maxW = 16;
     private static boolean reset = false;
+    private static FileWriter codewordFileWriter;
 
     // The boolean return tells you if you have to reset the dictionary or not
     private static boolean  pushOut(int toWrite, int counter){
@@ -26,6 +31,8 @@ public class LZWmod {
         if(Math.log(counter) / Math.log(2) == W){
             W ++;
         }
+
+        writeToTheDebugFile("Wrote " + nlen(W, toWrite) + " or hex " + Integer.toHexString(toWrite) + " or table entry: " + toWrite + "\n");
 
         if(toWrite > counter){
             throw new RuntimeException("Houston, we have an encoding issue.");
@@ -115,6 +122,15 @@ public class LZWmod {
         return returner.toString();
     }
 
+    private static void writeToTheDebugFile(String s){
+        try {
+            codewordFileWriter.write(s);
+        }
+        catch(IOException e){
+            // Still won't do anything
+        }
+    }
+
 
     public static void expand() {
         // First, need to determine if we're in reset mode or not
@@ -137,6 +153,7 @@ public class LZWmod {
         int codeword = BinaryStdIn.readInt(W);
         StringBuilder oldWord = new StringBuilder(st[codeword]);
         BinaryStdOut.write(oldWord.toString());
+        writeToTheDebugFile("Read " + nlen(W, codeword) + " or hex " + Integer.toHexString(codeword) + " or table entry: " + codeword + "\n");
         counter++;
 
         while (true) {
@@ -149,6 +166,7 @@ public class LZWmod {
             // Read in the next codeword
             codeword = BinaryStdIn.readInt(W);
             //System.out.println("The " + counter + "th number binary is: " + nlen(W, codeword));
+            writeToTheDebugFile("Read " + nlen(W, codeword) + " or hex " + Integer.toHexString(codeword) + " or table entry: " + codeword + "\n");
 
             StringBuilder newWord;
             if(codeword >= counter){ // This takes care of the case when a value is used immediately after being encoded
@@ -175,22 +193,31 @@ public class LZWmod {
 
 
     public static void main(String[] args) {
+        File myFile = new File("..\\BasicTestDirectory\\NewDecodingFile.txt");
+        try {
+            // Make the file
+            myFile.createNewFile();
+            // Open it up
+            codewordFileWriter = new FileWriter(myFile);
 
-        if (args[0].equals("-")) {
-            if(args.length != 3) {
-                if (args[1].equals("r")) reset = true;
-                else if (args[1].equals("n")) reset = false;
-                else throw new RuntimeException("Illegal command line argument");
-                // To be used in the decompression
-                BinaryStdOut.writeBit(reset);
-                compress();
-            }
-            else{
-                throw new RuntimeException("Incorrect number of parameters");
-            }
+            if (args[0].equals("-")) {
+                if (args.length != 3) {
+                    if (args[1].equals("r")) reset = true;
+                    else if (args[1].equals("n")) reset = false;
+                    else throw new RuntimeException("Illegal command line argument");
+                    // To be used in the decompression
+                    BinaryStdOut.writeBit(reset);
+                    compress();
+                } else {
+                    throw new RuntimeException("Incorrect number of parameters");
+                }
+            } else if (args[0].equals("+")) expand();
+            else throw new RuntimeException("Illegal command line argument");
+
+            // Always close your files!
+            codewordFileWriter.close();
         }
-        else if (args[0].equals("+")) expand();
-        else throw new RuntimeException("Illegal command line argument");
+        catch(IOException e){throw new RuntimeException("Couldn't create the file, for whatever reason.");}
     }
 
 }

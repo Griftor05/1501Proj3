@@ -11,6 +11,7 @@
  ******************************************************************************/
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
@@ -40,6 +41,7 @@ public final class BinaryStdIn {
     private static int buffer;              // one character buffer
     private static int n;                   // number of bits left in buffer
     private static boolean isInitialized;   // has BinaryStdIn been called for first time?
+
 
     // don't instantiate
     private BinaryStdIn() { }
