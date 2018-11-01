@@ -22,7 +22,7 @@ public class LZWmod {
     private static int W = startW;         // base codeword width (will get longer as we get more keycodes)
     private static int maxW = 16;
     private static boolean reset = false;
-    private static FileWriter codewordFileWriter;
+    //private static FileWriter codewordFileWriter;
 
     // The boolean return tells you if you have to reset the dictionary or not
     private static boolean  pushOut(int toWrite, int counter){
@@ -122,15 +122,6 @@ public class LZWmod {
         return returner.toString();
     }
 
-    private static void writeToTheDebugFile(String s){
-        try {
-            codewordFileWriter.write(s);
-        }
-        catch(IOException e){
-            // Still won't do anything
-        }
-    }
-
 
     public static void expand() {
         // First, need to determine if we're in reset mode or not
@@ -157,7 +148,7 @@ public class LZWmod {
 
         while (true) {
             // need to check if codeword size has to be biggified
-            if(Math.log(counter) / Math.log(2) == W){
+            if(Math.log(counter + 1) / Math.log(2) == W){
                 W ++;
             }
 
@@ -167,7 +158,8 @@ public class LZWmod {
             //writeToTheDebugFile("Read " + nlen(W, codeword) + " or hex " + Integer.toHexString(codeword) + " or table entry: " + codeword + "\n");
 
             StringBuilder newWord;
-            if(codeword >= counter){ // This takes care of the case when a value is used immediately after being encoded
+            if(codeword == counter){ // This takes care of the case when a value is used immediately after being encoded
+                // Should never get a codeword larger than counter
                 oldWord = oldWord.append(oldWord.substring(0, 1));
                 newWord = new StringBuilder(oldWord);
             }
@@ -176,7 +168,7 @@ public class LZWmod {
                 oldWord.append(newWord.substring(0, 1));
             }
             else{
-                throw new RuntimeException("The encoding went wrong, somehow! Or the retrieval. Either way, something.");
+                throw new RuntimeException("Something went wrong with the decoding!");
             }
 
             if (codeword == R) break;
@@ -191,31 +183,20 @@ public class LZWmod {
 
 
     public static void main(String[] args) {
-        File myFile = new File("..\\BasicTestDirectory\\NewDecodingFile.txt");
-        try {
-            // Make the file
-            myFile.createNewFile();
-            // Open it up
-            codewordFileWriter = new FileWriter(myFile);
 
-            if (args[0].equals("-")) {
-                if (args.length != 3) {
-                    if (args[1].equals("r")) reset = true;
-                    else if (args[1].equals("n")) reset = false;
-                    else throw new RuntimeException("Illegal command line argument");
-                    // To be used in the decompression
-                    BinaryStdOut.writeBit(reset);
-                    compress();
-                } else {
-                    throw new RuntimeException("Incorrect number of parameters");
-                }
-            } else if (args[0].equals("+")) expand();
-            else throw new RuntimeException("Illegal command line argument");
-
-            // Always close your files!
-            codewordFileWriter.close();
-        }
-        catch(IOException e){throw new RuntimeException("Couldn't create the file, for whatever reason.");}
+        if (args[0].equals("-")) {
+            if (args.length != 3) {
+                if (args[1].equals("r")) reset = true;
+                else if (args[1].equals("n")) reset = false;
+                else throw new RuntimeException("Illegal command line argument");
+                // To be used in the decompression
+                BinaryStdOut.writeBit(reset);
+                compress();
+            } else {
+                throw new RuntimeException("Incorrect number of parameters");
+            }
+        } else if (args[0].equals("+")) expand();
+        else throw new RuntimeException("Illegal command line argument");
     }
 
 }
