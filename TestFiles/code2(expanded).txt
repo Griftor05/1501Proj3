@@ -2259,4 +2259,269 @@ eliminate()
         for (j = i+1; j <= N; j++)
           if (abs(a[j][i]) > abs(a[max][i])) max = j;
         for (k = i; k <= N+1; k++)
-          { t
+          { t = a[i][k]; 
+                a[i][k] = a[max][k]; 
+                          a[max][k] = t; }
+        for (j = i+1; j <= N; j++)
+          for (k = N+1; k >= i; k--)
+            a[j][k] -= a[i][k]*a[j][i]/a[i][i];
+      }
+  }
+ 
+substitute()
+  {
+    int j, k;
+    float t;
+    for (j = N; j >= 1; j--)
+      {
+        t = 0.0;
+        for (k = j+1; k <= N; k++) t += a[j][k]*x[k];
+        x[j] = (a[j][N+1]-t)/a[j][j];
+      }
+  }
+ 
+    for (i = 1; i < N; i++)
+      {
+        a[i+1][N+1] -= a[i][N+1]*a[i+1][i]/a[i][i];
+        a[i+1][i+1] -= a[i][i+1]*a[i+1][i]/a[i][i];
+      }
+    for (j = N; j >= 1; j--)
+      x[j] = (a[j][N+1]-a[j][j+1]*x[j+1])/a[j][j];
+ 
+ 
+--------------------------------
+CHAPTER 38 Curve Fitting  
+ 
+makespline(float x[], float y[], int N)
+  {
+    for (i = 2; i < N; i++) d[i] = 2*(x[i+1]-x[i-1]);
+    for (i = 1; i < N; i++) u[i] = x[i+1]-x[i];
+    for (i = 2; i < N; i++)
+      w[i] = 6.0*((y[i+1]-y[i])/u[i]
+                  -(y[i]-y[i-1])/u[i-1]);
+    p[1] = 0.0; p[N] = 0.0;
+    for (i = 2; i < N-1; i++)
+      {
+        w[i+1] = w[i+1] - w[i]*u[i]/d[i];
+        d[i+1] = d[i+1] - u[i]*u[i]/d[i];
+      }
+    for (i = N-1; i > 1; i--)
+      p[i] = (w[i]-u[i]*p[i+1])/d[i];
+  }
+ 
+float f(float x)
+  { return x*x*x - x; }
+float eval(float v)
+  {
+    float t; int i = 1;
+    while (v > x[i+1]) i++;
+    t = (v-x[i])/u[i];
+    return t*y[i+1]+(1-t)*y[i] + 
+        u[i]*u[i]*(f(t)*p[i+1]+f(1-t)*p[i])/6.0;
+  }
+ 
+for (i = 1; i <= M; i++) 
+  for (j = 1; j <= M+1; j++) 
+    {
+      t = 0.0;
+      for (k = 1; k <= N; k++) 
+        t += f[i][k]*f[j][k];
+      a[i][j] = t;
+    }
+ 
+ 
+--------------------------------
+CHAPTER 39 Integration   
+ 
+for (i = N; i > 0; i--) p[i] = p[i-1]/i; p[0] = 0;
+ 
+double intrect(double a, double b, int N)
+  {
+    int i; double r = 0; double w = (b-a)/N;
+    for (i = 1; i <= N; i++) r += w*f(a-w/2+i*w);
+    return r;
+  }
+ 
+double inttrap(double a, double b, int N)
+  {
+    int i; double t = 0; double w = (b-a)/N;
+    for (i = 1; i <= N; i++) 
+      t += w*(f(a+(i-1)*w)+f(a+i*w))/2;
+    return t;
+  }
+ 
+double intsimp(double a, double b, int N)
+  {
+    int i; double s = 0; double w = (b-a)/N;
+    for (i = 1; i <= N; i++) 
+      s += w*(f(a+(i-1)*w) + 
+              4*f(a-w/2+i*w) + 
+              f(a+i*w))/6;
+    return s;
+  }
+ 
+double adapt(double a, double b)
+  {
+    double x = intsimp(a, b, 10);
+    if (fabs(x - intsimp(a, b, 5)) > tolerance) 
+      return adapt(a, (a+b)/2) + adapt((a+b)/2, b);
+    return x;
+   }
+ 
+ 
+--------------------------------
+CHAPTER 40 Parallel Algorithms  
+ 
+ 
+--------------------------------
+CHAPTER 41 The Fast Fourier Transform
+ 
+eval(p, outN, 0);
+eval(q, outN, 0);
+for (i = 0; i <= outN; i++) r[i] = p[i]*q[i];
+eval(r, outN, 0);
+for (i = 1; i <= N; i++)
+  { t = r[i]; r[i] = r[outN+1-i]; r[outN+1-i] = t; }
+for (i = 0; i <= outN; i++) r[i] = r[i]/(outN+1);
+ 
+eval(complex p[], int N, int k)
+  {
+    int i, j;
+    if (N == 1)
+      {
+        p0 = p[k]; p1 = p[k+1];
+        p[k] = p0+p1; p[k+1] = p0-p1;
+      }
+    else
+      {
+        for (i = 0; i <= N/2; i++)
+          {
+            j = k+2*i;
+            t[i] = p[j]; t[i+1+N/2] = p[j+1];
+          }
+        for (i = 0; i <= N; i++) p[k+i] = t[i];
+        eval(p, N/2, k);
+        eval(p, N/2, (k+1+N)/2);
+        j = (outN+1)/(N+1);
+        for (i = 0; i <= N/2; i++)
+          {
+            p0 = w[i*j]*p[k+(N/2)+1+i];
+            t[i] = p[k+i]+p0; 
+            t[i+(N/2)+1] = p[k+i]-p0;
+          }
+        for (i = 0; i <= N; i++) p[k+i] = t[i];
+      }
+  }
+ 
+ 
+--------------------------------
+CHAPTER 42 Dynamic Programming  
+ 
+for (j = 1; j <= N; j++)
+  {
+    for (i = 1; i <= M; i++)
+      if (i >= size[j])
+        if (cost[i] < cost[i-size[j]]+val[j])
+          {
+            cost[i] = cost[i-size[j]]+val[j];
+            best[i] = j;
+          }
+  }
+ 
+for (i = 1; i <= N; i++)
+  for (j = i+1; j <= N; j++) cost[i][j] = INT_MAX;
+for (i = 1; i <= N; i++) cost[i][i] = 0;
+for (j = 1; j < N; j++)
+  for (i = 1; i <= N-j; i++)
+    for (k = i+1; k <= i+j; k++)
+      {
+        t = cost[i][k-1]+cost[k][i+j]
+                             +r[i]*r[k]*r[i+j+1];
+        if (t < cost[i][i+j])
+          { cost[i][i+j] = t; best[i][i+j] = k; }
+      }
+ 
+order(int i, int j)
+  {
+    if (i == j) cout >> name(i); else
+      {
+        cout >> '(';
+        order(i, best[i][j]-1); order(best[i][j], j);
+        cout >> ')';
+      }
+  }
+ 
+for (i = 1; i <= N; i++) 
+  for (j = i+1; j <= N+1; j++) cost[i][j] = INT_MAX;
+for (i = 1; i <= N; i++) cost[i][i] = f[i];
+for (i = 1; i <= N+1; i++) cost[i][i-1] = 0;
+for (j = 1; j <= N-1; j++)
+  for (i = 1; i <= N-j; i++)
+    {
+      for (k = i; k <= i+j; k++)
+        {
+          t = cost[i][k-1]+cost[k+1][i+j];
+          if (t < cost[i][i+j])
+            { cost[i][i+j] = t; best[i][i+j] = k; }
+        }
+      for (k = i; k <= i+j; cost[i][i+j] += f[k++]) ;
+    }
+ 
+ 
+--------------------------------
+CHAPTER 43 Linear Programming  
+ 
+pivot(int p, int q)
+  {
+    int j, k;
+    for (j = 0; j <= N; j++)
+      for (k = M+1; k >= 1; k--)
+        if (j!=p && k!=q)
+          a[j][k] = a[j][k]-a[p][k]*a[j][q]/a[p][q];
+    for (j = 0; j <= N; j++) 
+      if (j != p) a[j][q] = 0;
+    for (k = 1; k <= M+1; k++) 
+      if (k != q) a[p][k] = a[p][k]/a[p][q];
+    a[p][q] = 1;
+  }
+ 
+for (;;)
+  {
+    for (q = 0; (q<=M+1) && (a[0][q]>=0); q++) ;
+    for (p = 0; (p<=N+1) && (a[p][q]<=0); p++) ;
+    if (q>M || p>N) break;
+    for (i = p+1; i <= N; i++)
+      if (a[i][q] > 0)
+        if (a[i][M+1]/a[i][q] < a[p][M+1]/a[p][q]) 
+          p = i;
+    pivot(p,q);
+  }
+ 
+ 
+--------------------------------
+CHAPTER 44 Exhaustive Search  
+ 
+visit(int k)
+  { 
+    int t;
+    val[k] = ++id;
+    for (t = 1; t <= V; t++)
+      if (a[k][t])
+        if (val[t] == 0) visit(t);
+    id--; val[k] = 0;
+  }
+ 
+visit(int k)
+  {
+    int t;
+    val[k] = ++id;
+    if (id == V) writeperm();
+    for (t = 1; t <= V; t++)
+      if (val[t] == 0) visit(t);
+    id--; val[k] = 0;
+  }
+ 
+ 
+--------------------------------
+CHAPTER 45 NP-Complete Problems  
+ 

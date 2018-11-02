@@ -22,6 +22,7 @@ public class LZWmod {
     private static int W = startW;         // base codeword width (will get longer as we get more keycodes)
     private static int maxW = 16;
     private static boolean reset = false;
+    private static boolean tablefull = false;
     //private static FileWriter codewordFileWriter;
 
     // The boolean return tells you if you have to reset the dictionary or not
@@ -41,7 +42,7 @@ public class LZWmod {
         // Then we need to write toWrite as a W-width number to the file
         BinaryStdOut.write(toWrite, W);
 
-        return (reset && Math.log(counter + 1) >= maxW);
+        return (reset && Math.log(counter + 1) / Math.log(2) >= maxW);
     }
 
     public static void compress() {
@@ -125,13 +126,13 @@ public class LZWmod {
 
     public static void expand() {
         // First, need to determine if we're in reset mode or not
-        boolean resetBit = BinaryStdIn.readBoolean();
+        // If true, have to include reset code
+        reset = BinaryStdIn.readBoolean();
 
         String[] st = new String[L];
-        int readIn;
 
         // initialize symbol table with all 1-character strings
-        int counter = 0;
+        int counter;
         // Have to pre-populate with the codewords
         for(counter = 0; counter <= 255; counter++){
             String mychar = Character.toString((char)counter);
@@ -148,8 +149,14 @@ public class LZWmod {
 
         while (true) {
             // need to check if codeword size has to be biggified
-            if(Math.log(counter + 1) / Math.log(2) == W){
+            if(W < maxW && Math.log(counter + 1) / Math.log(2) == W){
                 W ++;
+            }
+            else{
+                // Check if the table is full
+                if(Math.log(counter + 1) / Math.log(2) == W) {
+                    tablefull = true;
+                }
             }
 
             // Read in the next codeword
@@ -173,10 +180,25 @@ public class LZWmod {
 
             if (codeword == R) break;
 
-            // Either way, put oldWord into the array, and write out your new string.
-            st[counter++] = oldWord.toString();
-            BinaryStdOut.write(newWord.toString());
-            oldWord = newWord;
+            // If we wanna reset the table and it's full, reset it.
+            if(reset && tablefull){
+                tablefull = false;
+                W = startW;
+                st = new String[L];
+
+                // Prepopulate with the chars
+                for(counter = 0; counter <= 255; counter++){
+                    String mychar = Character.toString((char)counter);
+                    st[counter] = mychar;
+                }
+
+                // Put in 256 as the EOF
+                st[counter++] = Character.toString((char)R);
+            }
+
+            // HERE IS WHERE WE ACTUALLY DO THE OUTPUTTING. FIGURE THAT OUT, BUDDY.
+            // BinaryStdOut.write(newWord.toString());
+
         }
         BinaryStdOut.close();
     }
