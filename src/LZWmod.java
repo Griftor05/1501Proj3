@@ -17,23 +17,20 @@ import java.util.NoSuchElementException;
 
 public class LZWmod {
     private static final int R = 256;        // number of input chars
-    private static final int L = 65536;       // number of codewords = 2^W
     public static final int startW = 9;
     private static int W = startW;         // base codeword width (will get longer as we get more keycodes)
     private static int maxW = 16;
+    private static final int L = (int)Math.pow(2, maxW);       // number of codewords = 2^W
     private static boolean reset = false;
     private static boolean tablefull = false;
-    //private static FileWriter codewordFileWriter;
 
     // The boolean return tells you if you have to reset the dictionary or not
-    private static boolean  pushOut(int toWrite, int counter){
+    private static void pushOut(int toWrite, int counter){
         // First, need to check if we need to bump up codeword size
         // Have to divide by ln 2 because of logarithm rules (I want log base 2 of counter)
         if(Math.log(counter) / Math.log(2) == W){
             W ++;
         }
-
-        //writeToTheDebugFile("Wrote " + nlen(W, toWrite) + " or hex " + Integer.toHexString(toWrite) + " or table entry: " + toWrite + "\n");
 
         if(toWrite > counter){
             throw new RuntimeException("Houston, we have an encoding issue.");
@@ -41,8 +38,6 @@ public class LZWmod {
 
         // Then we need to write toWrite as a W-width number to the file
         BinaryStdOut.write(toWrite, W);
-
-        return (reset && Math.log(counter + 1) / Math.log(2) >= maxW);
     }
 
     public static void compress() {
@@ -61,7 +56,7 @@ public class LZWmod {
 
         StringBuilder s = new StringBuilder();
         StringBuilder writebuffer = new StringBuilder();
-        char mybyte;
+        char mybyte = 0;
         int lookupReturn;
         boolean needToReset;
 
@@ -76,7 +71,7 @@ public class LZWmod {
                 // If we get a 2 or a 3, we'll just have to keep looping
                 if(lookupReturn == 0 || lookupReturn == 1) {
                     // We have a new word, so let's add it to the TST and the DLB, but only if the table isn't full
-                    if(W < maxW || reset || (Math.log(counter) / Math.log(2) <= maxW)) {
+                    if(!tablefull) {
                         String toadd = s.toString();
                         st.put(toadd, counter);
                         mydlb.add(toadd);
@@ -85,9 +80,17 @@ public class LZWmod {
                     // We know that s with 1 less character is always valid (could be proven inductively, ha ha)
                     //     so push that mapped int to the printbuffer and update s with just the byte
                     int gotback = st.get(s.substring(0, s.length() - 1));
-                    needToReset = pushOut(gotback, counter++);
-                    if(needToReset){
+
+                    pushOut(gotback, counter++);
+
+                    // Now just check if the table is full, and react accordingly
+                    if(counter == L){
+                        tablefull = true;
+                    }
+
+                    if(tablefull && reset){
                         //Need to repopulate the table
+                        tablefull = false;
                         mydlb = new DLB();
                         st = new TST<Integer>();
                         W = startW;
@@ -105,12 +108,11 @@ public class LZWmod {
                 break;
             }
         }
-                // Else, keep looping
-                // Need this code, but definitely not here
 
-        // Apparently R is the codeword for EOF
+        BinaryStdOut.write("The last thing I wrote was the string: " + (int)mybyte);
+
+        // R is the codeword for EOF
         // Make sure that we've got everything in the file
-        BinaryStdOut.flush();
         BinaryStdOut.write(R, W);
         BinaryStdOut.close();
     }
@@ -128,8 +130,8 @@ public class LZWmod {
         // First, need to determine if we're in reset mode or not
         // If true, have to include reset code
         reset = BinaryStdIn.readBoolean();
-
         String[] st = new String[L];
+        boolean grablast = false;
 
         // initialize symbol table with all 1-character strings
         int counter;
@@ -145,42 +147,18 @@ public class LZWmod {
         int codeword = BinaryStdIn.readInt(W);
         StringBuilder oldWord = new StringBuilder(st[codeword]);
         BinaryStdOut.write(oldWord.toString());
-        //writeToTheDebugFile("Read " + nlen(W, codeword) + " or hex " + Integer.toHexString(codeword) + " or table entry: " + codeword + "\n");
 
         while (true) {
             // need to check if codeword size has to be biggified
-            if(W < maxW && Math.log(counter + 1) / Math.log(2) == W){
+            if(Math.log(counter + 1) / Math.log(2) == W){
                 W ++;
-            }
-            else{
-                // Check if the table is full
-                if(Math.log(counter + 1) / Math.log(2) == W) {
+                BinaryStdOut.write("Moving up to " + W);
+                if(W > maxW){
                     tablefull = true;
                 }
             }
 
-            // Read in the next codeword
-            codeword = BinaryStdIn.readInt(W);
-            //System.out.println("The " + counter + "th number binary is: " + nlen(W, codeword));
-            //writeToTheDebugFile("Read " + nlen(W, codeword) + " or hex " + Integer.toHexString(codeword) + " or table entry: " + codeword + "\n");
-
-            StringBuilder newWord;
-            if(codeword == counter){ // This takes care of the case when a value is used immediately after being encoded
-                // Should never get a codeword larger than counter
-                oldWord = oldWord.append(oldWord.substring(0, 1));
-                newWord = new StringBuilder(oldWord);
-            }
-            else if(codeword < counter){ // Otherwise, the old word appends the first letter of the new string
-                newWord = new StringBuilder(st[codeword]);
-                oldWord.append(newWord.substring(0, 1));
-            }
-            else{
-                throw new RuntimeException("Something went wrong with the decoding!");
-            }
-
-            if (codeword == R) break;
-
-            // If we wanna reset the table and it's full, reset it.
+            // Now, if the table is full, W will definitely be too big
             if(reset && tablefull){
                 tablefull = false;
                 W = startW;
@@ -194,11 +172,51 @@ public class LZWmod {
 
                 // Put in 256 as the EOF
                 st[counter++] = Character.toString((char)R);
+                // Grab the last char of Oldword and the new char to add to the st list
+                oldWord = new StringBuilder(oldWord.substring(oldWord.length() - 2, oldWord.length()));
+                grablast = true;
             }
+            else if(tablefull){
+                W = maxW;
+            }
+
+            // Read in the next codeword
+            codeword = BinaryStdIn.readInt(W);
+
+            StringBuilder newWord;
+            if(codeword == counter){ // This takes care of the case when a value is used immediately after being encoded
+                // Should never get a codeword larger than counter
+                oldWord = oldWord.append(oldWord.substring(0, 1));
+                newWord = new StringBuilder(oldWord);
+            }
+            else if(codeword < counter){ // Otherwise, the old word appends the first letter of the new string
+                newWord = new StringBuilder(st[codeword]);
+                oldWord.append(newWord.substring(0, 1));
+            }
+            else{
+                BinaryStdOut.write("Something went wrong at encoded int: " + codeword + " where the counter is " + counter);
+                BinaryStdOut.close();
+                throw new RuntimeException("Something went wrong with the encoding!");
+            }
+
+            if (codeword == R) break;
 
             // HERE IS WHERE WE ACTUALLY DO THE OUTPUTTING. FIGURE THAT OUT, BUDDY.
             // BinaryStdOut.write(newWord.toString());
+            // If we got here and table is full, we know reset isn't true, so don't do the st adding
+            if(!tablefull){
+                st[counter++] = oldWord.toString();
+            }
 
+            BinaryStdOut.write(newWord.toString());
+
+            if(grablast){
+                grablast = false;
+                oldWord = new StringBuilder(newWord.substring(newWord.length() - 1));
+            }
+            else{
+                oldWord = newWord;
+            }
         }
         BinaryStdOut.close();
     }
