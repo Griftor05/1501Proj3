@@ -24,9 +24,9 @@ public class LZWmod {
     private static boolean reset = false;
     private static boolean tablefull = false;
 
-    private static String nlen(int w, int codeword){
+    private static String nlen(int length, int codeword){
         StringBuilder returner = new StringBuilder(Integer.toBinaryString(codeword)).reverse();
-        while(returner.length() < w)
+        while(returner.length() < length)
             returner.append("0");
         returner.reverse();
         return returner.toString();
@@ -44,9 +44,13 @@ public class LZWmod {
         int counter;
         // Initialize our structures with all the ascii codewords
         for(counter = 0; counter < 256; counter++){
-            mydlb.add(Character.toString((char)counter));
-            st.put(Character.toString((char)counter), counter);
+            String addedchar = Character.toString((char)counter);
+            mydlb.add(addedchar);
+            st.put(addedchar, counter);
         }
+        mydlb.add("__NULL__");
+        st.put("__NULL__", counter++);
+        // NoChar == 256char
 
         while(true){
             try{
@@ -55,10 +59,12 @@ public class LZWmod {
                 readInWord.append(nextchar);
                 int inDLB = mydlb.searchPrefix(readInWord);
                 // If it isn't a word and the table isn't full, we'll want to add it
+                //System.out.println("The current readInWord is " + readInWord.toString());
                 if((inDLB == 0 || inDLB == 1) && !tablefull){
+                    //System.out.println("Got through with the readInWord " + readInWord.toString());
                     String toAdd = readInWord.toString();
                     mydlb.add(toAdd);
-                    st.put(toAdd, counter ++);
+                    st.put(toAdd, counter++);
 
                     // Now we should check if counter got too big
                     if(Math.log(counter) / Math.log(2) == W){
@@ -75,13 +81,15 @@ public class LZWmod {
 
                     // And also write the n - 1 word to the file
                     Integer towrite = st.get(readInWord.substring(0, readInWord.length() - 1));
-                    readInWord = new StringBuilder(readInWord.substring(readInWord.length() - 1));
-                    BinaryStdOut.write(nlen(W, towrite));
+                    readInWord = new StringBuilder().append(nextchar);
+                    //System.out.println("Writing the integer " + towrite);
+                    //System.out.println("And now readInWord is " + readInWord + " and the char is " + nextchar);
+                    BinaryStdOut.write(towrite, W);
                 } // If the table is full, we want to just write the n - 1 word to the file
-                else if((inDLB == 0 || inDLB == 1) && !tablefull){
+                else if((inDLB == 0 || inDLB == 1) && tablefull){
                     Integer towrite = st.get(readInWord.substring(0, readInWord.length() - 1));
                     readInWord = new StringBuilder(readInWord.substring(readInWord.length() - 1));
-                    BinaryStdOut.write(nlen(W, towrite));
+                    BinaryStdOut.write(towrite, W);
                 } // Otherwise, keep looping
                 else{
                     continue;
@@ -95,22 +103,26 @@ public class LZWmod {
         }
     }
 
-
     public static void expand() {
         // Steps of expanding:
         // 1 - Read in an integer
         //    If the integer is already declared, grab it and write that value to the output file
         //    If the integer is equal to the counter, it is the word + the first letter of the word
         // 2 - Repeat
+        reset = BinaryStdIn.readBoolean();
         String[] st = new String[L];
         int counter;
         for(counter = 0; counter < 256; counter++){
             st[counter] = Character.toString((char)counter);
         }
+        // NoChar == 256
+        st[counter++] = "__NULL__";
         int readIn;
         String toWrite;
-        String toRemember = st[BinaryStdIn.readInt(W)];
+        int firstNum = BinaryStdIn.readInt(W);
+        String toRemember = st[firstNum];
         BinaryStdOut.write(toRemember);
+        int lag = 0;
 
         while(true){
             try{
@@ -119,12 +131,16 @@ public class LZWmod {
                 // Need to get the corresponding word from the array
                 if(readIn == counter){
                     // Then the word is equal to the word plus the first letter of itself
-                    toWrite = st[counter - 1];
+                    toWrite = toRemember;
                     toWrite = toWrite + toWrite.substring(0, 1);
                 }
-                else{
+                else if(readIn < counter){
                     // Otherwise, the word is just gotten from the array
-                    toWrite = st[counter];
+                    toWrite = st[readIn];
+                }
+                else{
+                    BinaryStdOut.flush();
+                    throw new RuntimeException("Something is decoding funky.");
                 }
                 // In either case, first add the old string to the array
                 st[counter++] = toRemember + toWrite.substring(0, 1);
@@ -135,7 +151,7 @@ public class LZWmod {
                 toRemember = toWrite;
 
                 // Also check if counter has gotten too big
-                if(Math.log(counter) / Math.log(2) == W){
+                if(Math.log(counter + 1) / Math.log(2) == W){
                     W++;
                 }
                 if(W > maxW){
@@ -149,6 +165,8 @@ public class LZWmod {
                     for(counter = 0; counter < 256; counter++){
                         st[counter] = Character.toString((char)counter);
                     }
+                    // NoChar == 256
+                    st[counter++] = "__NULL__";
 
                     toRemember = st[BinaryStdIn.readInt(W)];
                     BinaryStdOut.write(toRemember);
