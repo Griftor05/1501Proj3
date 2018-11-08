@@ -71,8 +71,10 @@ public class LZWmod {
                         W++;
                     }
                     if(W > maxW){
+                        W--;
+                    }
+                    if(counter + 1 == L){
                         tablefull = true;
-                        W --;
                     }
                     if(tablefull && reset){
                         W = startW;
@@ -97,6 +99,11 @@ public class LZWmod {
 
             }
             catch(NoSuchElementException e){
+                // If we've reached the end of the file, push out the last codeword
+                // And I'm like 99% sure it'll be in st, so if not, we'll have to fix it.
+                Integer towrite = st.get(readInWord.toString());
+                BinaryStdOut.write(towrite, W);
+                BinaryStdOut.flush();
                 break;
                 // We've reached the end of the file.
             }
@@ -122,7 +129,6 @@ public class LZWmod {
         int firstNum = BinaryStdIn.readInt(W);
         String toRemember = st[firstNum];
         BinaryStdOut.write(toRemember);
-        int lag = 0;
 
         while(true){
             try{
@@ -143,20 +149,25 @@ public class LZWmod {
                     throw new RuntimeException("Something is decoding funky.");
                 }
                 // In either case, first add the old string to the array
-                st[counter++] = toRemember + toWrite.substring(0, 1);
+                if(!tablefull) {
+                    st[counter++] = toRemember + toWrite.substring(0, 1);
+                }
 
                 // Then write out the new string
                 BinaryStdOut.write(toWrite);
-                // The do the reset
+                // Then do the reset
                 toRemember = toWrite;
 
                 // Also check if counter has gotten too big
-                if(Math.log(counter + 1) / Math.log(2) == W){
+                if(Math.log(counter + 2) / Math.log(2) == W){
                     W++;
                 }
                 if(W > maxW){
-                    W --;
+                    W--;
+                }
+                if(counter + 1 == L){
                     tablefull = true;
+                    // After this, counter shouldn't be referenced
                 }
                 if(tablefull && reset){
                     W = startW;
@@ -173,6 +184,8 @@ public class LZWmod {
                 }
             }
             catch(NoSuchElementException e){
+                // Just have to write out this last bit, and then done
+                BinaryStdOut.flush();
                 break;
                 // Got to the end of the file
             }
@@ -197,5 +210,4 @@ public class LZWmod {
         } else if (args[0].equals("+")) expand();
         else throw new RuntimeException("Illegal command line argument");
     }
-
 }
