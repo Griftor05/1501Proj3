@@ -79,13 +79,20 @@ public class LZWmod {
                     if(tablefull && reset){
                         W = startW;
                         tablefull = false;
+
+                        // Also Initialize our structures with all the ascii codewords
+                        for(counter = 0; counter < 256; counter++){
+                            String addedchar = Character.toString((char)counter);
+                            mydlb.add(addedchar);
+                            st.put(addedchar, counter);
+                        }
+                        mydlb.add("__NULL__");
+                        st.put("__NULL__", counter++);
                     }
 
                     // And also write the n - 1 word to the file
                     Integer towrite = st.get(readInWord.substring(0, readInWord.length() - 1));
                     readInWord = new StringBuilder().append(nextchar);
-                    //System.out.println("Writing the integer " + towrite);
-                    //System.out.println("And now readInWord is " + readInWord + " and the char is " + nextchar);
                     BinaryStdOut.write(towrite, W);
                 } // If the table is full, we want to just write the n - 1 word to the file
                 else if((inDLB == 0 || inDLB == 1) && tablefull){
