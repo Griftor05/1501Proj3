@@ -42,6 +42,7 @@ public class LZWmod {
         DLB mydlb = new DLB();
         StringBuilder readInWord = new StringBuilder();
         int counter;
+
         // Initialize our structures with all the ascii codewords
         for(counter = 0; counter < 256; counter++){
             String addedchar = Character.toString((char)counter);
@@ -59,9 +60,7 @@ public class LZWmod {
                 readInWord.append(nextchar);
                 int inDLB = mydlb.searchPrefix(readInWord);
                 // If it isn't a word and the table isn't full, we'll want to add it
-                //System.out.println("The current readInWord is " + readInWord.toString());
                 if((inDLB == 0 || inDLB == 1) && !tablefull){
-                    //System.out.println("Got through with the readInWord " + readInWord.toString());
                     String toAdd = readInWord.toString();
                     mydlb.add(toAdd);
                     st.put(toAdd, counter++);
@@ -73,12 +72,22 @@ public class LZWmod {
                     if(W > maxW){
                         W--;
                     }
-                    if(counter + 1 == L){
+                    if(counter + 2 == L){
                         tablefull = true;
                     }
+
+                    // Write the n - 1 word to the output
+                    Integer towrite = st.get(readInWord.substring(0, readInWord.length() - 1));
+                    readInWord = new StringBuilder().append(nextchar);
+                    BinaryStdOut.write(towrite, W);
+
+                    // And then if the table is full, we wanna reset everything
                     if(tablefull && reset){
                         W = startW;
                         tablefull = false;
+
+                        mydlb = new DLB();
+                        st = new TST<Integer>();
 
                         // Also Initialize our structures with all the ascii codewords
                         for(counter = 0; counter < 256; counter++){
@@ -90,10 +99,6 @@ public class LZWmod {
                         st.put("__NULL__", counter++);
                     }
 
-                    // And also write the n - 1 word to the file
-                    Integer towrite = st.get(readInWord.substring(0, readInWord.length() - 1));
-                    readInWord = new StringBuilder().append(nextchar);
-                    BinaryStdOut.write(towrite, W);
                 } // If the table is full, we want to just write the n - 1 word to the file
                 else if((inDLB == 0 || inDLB == 1) && tablefull){
                     Integer towrite = st.get(readInWord.substring(0, readInWord.length() - 1));
@@ -172,9 +177,8 @@ public class LZWmod {
                 if(W > maxW){
                     W--;
                 }
-                if(counter + 1 == L){
+                if(counter + 2 == L){
                     tablefull = true;
-                    // After this, counter shouldn't be referenced
                 }
                 if(tablefull && reset){
                     W = startW;
@@ -186,7 +190,8 @@ public class LZWmod {
                     // NoChar == 256
                     st[counter++] = "__NULL__";
 
-                    toRemember = st[BinaryStdIn.readInt(W)];
+                    int nextin = BinaryStdIn.readInt(W);
+                    toRemember = st[nextin];
                     BinaryStdOut.write(toRemember);
                 }
             }
