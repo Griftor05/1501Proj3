@@ -24,14 +24,6 @@ public class LZWmod {
     private static boolean reset = false;
     private static boolean tablefull = false;
 
-    private static String nlen(int length, int codeword){
-        StringBuilder returner = new StringBuilder(Integer.toBinaryString(codeword)).reverse();
-        while(returner.length() < length)
-            returner.append("0");
-        returner.reverse();
-        return returner.toString();
-    }
-
     // Compresses the file in StdIn to StdOut
     public static void compress() {
         // Steps of Compression:
@@ -77,7 +69,8 @@ public class LZWmod {
                     }
 
                     // Write the n - 1 word to the output
-                    Integer towrite = st.get(readInWord.substring(0, readInWord.length() - 1));
+                    String totranslate = readInWord.substring(0, readInWord.length() - 1);
+                    Integer towrite = st.get(totranslate);
                     readInWord = new StringBuilder().append(nextchar);
                     BinaryStdOut.write(towrite, W);
 
@@ -177,13 +170,15 @@ public class LZWmod {
                 if(W > maxW){
                     W--;
                 }
-                if(counter + 2 == L){
+                if(counter + 3 == L){
                     tablefull = true;
                 }
                 if(tablefull && reset){
+                    // Let's see what happens if we don't read in an extra word
                     W = startW;
                     tablefull = false;
                     st = new String[L];
+
                     for(counter = 0; counter < 256; counter++){
                         st[counter] = Character.toString((char)counter);
                     }
