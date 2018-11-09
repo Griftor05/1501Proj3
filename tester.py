@@ -2,6 +2,7 @@ import os
 import sys
 import time
 
+os.system("python cleaner.py")
 filenamelist = os.listdir("TestFiles")
 os.chdir("src")
 
@@ -20,6 +21,9 @@ for filename in filenamelist:
 	os.system("java LZWmod + < ..\\TestFiles\\" + newfilename + " > ..\\TestFiles\\" + newexpandedname)
 	end = time.time()
 	print("Decompressing " + filename + " took %.5f seconds." % (end - start))
+	ratio = os.stat("..\\TestFiles\\" + newfilename).st_size / os.stat("..\\TestFiles\\" + filename).st_size
+	print("Achieved a compression ratio of %.5f" % ratio)
+	
 	print("Oh, and that was with -" + sys.argv[1])
-	print("\n")
+	print()
 	

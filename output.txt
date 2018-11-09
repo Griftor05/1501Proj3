@@ -1,0 +1,252 @@
+Compressing all.tar took 29.72625 seconds.
+Decompressing all.tar took 0.47834 seconds.
+Oh, and that was with -r
+
+Compressing assig2.doc took 0.41129 seconds.
+Decompressing assig2.doc took 0.10711 seconds.
+Oh, and that was with -r
+
+Compressing bmps.tar took 22.42693 seconds.
+Decompressing bmps.tar took 0.15311 seconds.
+Oh, and that was with -r
+
+Compressing code.txt took 0.29220 seconds.
+Decompressing code.txt took 0.11709 seconds.
+Oh, and that was with -r
+
+Compressing code2.txt took 0.25317 seconds.
+Decompressing code2.txt took 0.10409 seconds.
+Oh, and that was with -r
+
+Compressing edit.exe took 1.27494 seconds.
+Decompressing edit.exe took 0.14411 seconds.
+Oh, and that was with -r
+
+Compressing frosty.jpg took 1.54408 seconds.
+Decompressing frosty.jpg took 0.14016 seconds.
+Oh, and that was with -r
+
+Compressing gone_fishing.bmp took 0.22515 seconds.
+Decompressing gone_fishing.bmp took 0.09807 seconds.
+Oh, and that was with -r
+
+Compressing large.txt took 4.48817 seconds.
+Decompressing large.txt took 0.29220 seconds.
+Oh, and that was with -r
+
+Compressing Lego-big.gif took 1.15982 seconds.
+Decompressing Lego-big.gif took 0.13109 seconds.
+Oh, and that was with -r
+
+Compressing medium.txt took 0.19314 seconds.
+Decompressing medium.txt took 0.10809 seconds.
+Oh, and that was with -r
+
+Compressing texts.tar took 5.03869 seconds.
+Decompressing texts.tar took 0.31522 seconds.
+Oh, and that was with -r
+
+Compressing wacky.bmp took 20.86679 seconds.
+Decompressing wacky.bmp took 0.12809 seconds.
+Oh, and that was with -r
+
+Compressing winnt256.bmp took 0.92066 seconds.
+Decompressing winnt256.bmp took 0.12108 seconds.
+Oh, and that was with -r
+
+Comparing files all(expanded).tar and ALL(EXPANDED)(EXPANDED).TAR
+Comparing files all.lzw and ALL(EXPANDED).LZW
+Comparing files all.tar and ALL(EXPANDED).TAR
+FC: no differences encountered
+
+Comparing files assig2(expanded).doc and ASSIG2(EXPANDED)(EXPANDED).DOC
+Comparing files assig2.doc and ASSIG2(EXPANDED).DOC
+FC: no differences encountered
+
+Comparing files assig2.lzw and ASSIG2(EXPANDED).LZW
+Comparing files bmps(expanded).tar and BMPS(EXPANDED)(EXPANDED).TAR
+Comparing files bmps.lzw and BMPS(EXPANDED).LZW
+Comparing files bmps.tar and BMPS(EXPANDED).TAR
+FC: no differences encountered
+
+Comparing files code(expanded).txt and CODE(EXPANDED)(EXPANDED).TXT
+Comparing files code.lzw and CODE(EXPANDED).LZW
+Comparing files code.txt and CODE(EXPANDED).TXT
+FC: no differences encountered
+
+Comparing files code2(expanded).txt and CODE2(EXPANDED)(EXPANDED).TXT
+Comparing files code2.lzw and CODE2(EXPANDED).LZW
+Comparing files code2.txt and CODE2(EXPANDED).TXT
+FC: no differences encountered
+
+Comparing files edit(expanded).exe and EDIT(EXPANDED)(EXPANDED).EXE
+Comparing files edit.exe and EDIT(EXPANDED).EXE
+FC: no differences encountered
+
+Comparing files edit.lzw and EDIT(EXPANDED).LZW
+Comparing files frosty(expanded).jpg and FROSTY(EXPANDED)(EXPANDED).JPG
+Comparing files frosty.jpg and FROSTY(EXPANDED).JPG
+FC: no differences encountered
+
+Comparing files frosty.lzw and FROSTY(EXPANDED).LZW
+Comparing files gone_fishing(expanded).bmp and GONE_FISHING(EXPANDED)(EXPANDED).BMP
+Comparing files gone_fishing.bmp and GONE_FISHING(EXPANDED).BMP
+FC: no differences encountered
+
+Comparing files gone_fishing.lzw and GONE_FISHING(EXPANDED).LZW
+Comparing files large(expanded).txt and LARGE(EXPANDED)(EXPANDED).TXT
+Comparing files large.lzw and LARGE(EXPANDED).LZW
+Comparing files large.txt and LARGE(EXPANDED).TXT
+FC: no differences encountered
+
+Comparing files Lego-big(expanded).gif and LEGO-BIG(EXPANDED)(EXPANDED).GIF
+Comparing files Lego-big.gif and LEGO-BIG(EXPANDED).GIF
+FC: no differences encountered
+
+Comparing files Lego-big.lzw and LEGO-BIG(EXPANDED).LZW
+Comparing files medium(expanded).txt and MEDIUM(EXPANDED)(EXPANDED).TXT
+Comparing files medium.lzw and MEDIUM(EXPANDED).LZW
+Comparing files medium.txt and MEDIUM(EXPANDED).TXT
+FC: no differences encountered
+
+Comparing files texts(expanded).tar and TEXTS(EXPANDED)(EXPANDED).TAR
+Comparing files texts.lzw and TEXTS(EXPANDED).LZW
+Comparing files texts.tar and TEXTS(EXPANDED).TAR
+FC: no differences encountered
+
+Comparing files wacky(expanded).bmp and WACKY(EXPANDED)(EXPANDED).BMP
+Comparing files wacky.bmp and WACKY(EXPANDED).BMP
+FC: no differences encountered
+
+Comparing files wacky.lzw and WACKY(EXPANDED).LZW
+Comparing files winnt256(expanded).bmp and WINNT256(EXPANDED)(EXPANDED).BMP
+Comparing files winnt256.bmp and WINNT256(EXPANDED).BMP
+FC: no differences encountered
+
+Comparing files winnt256.lzw and WINNT256(EXPANDED).LZW
+Compressing all.tar took 9.83598 seconds.
+Decompressing all.tar took 0.35025 seconds.
+Oh, and that was with -n
+
+Compressing assig2.doc took 0.41533 seconds.
+Decompressing assig2.doc took 0.10909 seconds.
+Oh, and that was with -n
+
+Compressing bmps.tar took 22.80613 seconds.
+Decompressing bmps.tar took 0.15409 seconds.
+Oh, and that was with -n
+
+Compressing code.txt took 0.28421 seconds.
+Decompressing code.txt took 0.12014 seconds.
+Oh, and that was with -n
+
+Compressing code2.txt took 0.26319 seconds.
+Decompressing code2.txt took 0.10709 seconds.
+Oh, and that was with -n
+
+Compressing edit.exe took 1.25493 seconds.
+Decompressing edit.exe took 0.14411 seconds.
+Oh, and that was with -n
+
+Compressing frosty.jpg took 1.40098 seconds.
+Decompressing frosty.jpg took 0.13810 seconds.
+Oh, and that was with -n
+
+Compressing gone_fishing.bmp took 0.19814 seconds.
+Decompressing gone_fishing.bmp took 0.10009 seconds.
+Oh, and that was with -n
+
+Compressing large.txt took 3.28959 seconds.
+Decompressing large.txt took 0.23016 seconds.
+Oh, and that was with -n
+
+Compressing Lego-big.gif took 1.32394 seconds.
+Decompressing Lego-big.gif took 0.15311 seconds.
+Oh, and that was with -n
+
+Compressing medium.txt took 0.19314 seconds.
+Decompressing medium.txt took 0.10407 seconds.
+Oh, and that was with -n
+
+Compressing texts.tar took 3.76766 seconds.
+Decompressing texts.tar took 0.22018 seconds.
+Oh, and that was with -n
+
+Compressing wacky.bmp took 19.53921 seconds.
+Decompressing wacky.bmp took 0.13110 seconds.
+Oh, and that was with -n
+
+Compressing winnt256.bmp took 1.00871 seconds.
+Decompressing winnt256.bmp took 0.13810 seconds.
+Oh, and that was with -n
+
+Comparing files all(expanded).tar and ALL(EXPANDED)(EXPANDED).TAR
+Comparing files all.lzw and ALL(EXPANDED).LZW
+Comparing files all.tar and ALL(EXPANDED).TAR
+FC: no differences encountered
+
+Comparing files assig2(expanded).doc and ASSIG2(EXPANDED)(EXPANDED).DOC
+Comparing files assig2.doc and ASSIG2(EXPANDED).DOC
+FC: no differences encountered
+
+Comparing files assig2.lzw and ASSIG2(EXPANDED).LZW
+Comparing files bmps(expanded).tar and BMPS(EXPANDED)(EXPANDED).TAR
+Comparing files bmps.lzw and BMPS(EXPANDED).LZW
+Comparing files bmps.tar and BMPS(EXPANDED).TAR
+FC: no differences encountered
+
+Comparing files code(expanded).txt and CODE(EXPANDED)(EXPANDED).TXT
+Comparing files code.lzw and CODE(EXPANDED).LZW
+Comparing files code.txt and CODE(EXPANDED).TXT
+FC: no differences encountered
+
+Comparing files code2(expanded).txt and CODE2(EXPANDED)(EXPANDED).TXT
+Comparing files code2.lzw and CODE2(EXPANDED).LZW
+Comparing files code2.txt and CODE2(EXPANDED).TXT
+FC: no differences encountered
+
+Comparing files edit(expanded).exe and EDIT(EXPANDED)(EXPANDED).EXE
+Comparing files edit.exe and EDIT(EXPANDED).EXE
+FC: no differences encountered
+
+Comparing files edit.lzw and EDIT(EXPANDED).LZW
+Comparing files frosty(expanded).jpg and FROSTY(EXPANDED)(EXPANDED).JPG
+Comparing files frosty.jpg and FROSTY(EXPANDED).JPG
+FC: no differences encountered
+
+Comparing files frosty.lzw and FROSTY(EXPANDED).LZW
+Comparing files gone_fishing(expanded).bmp and GONE_FISHING(EXPANDED)(EXPANDED).BMP
+Comparing files gone_fishing.bmp and GONE_FISHING(EXPANDED).BMP
+FC: no differences encountered
+
+Comparing files gone_fishing.lzw and GONE_FISHING(EXPANDED).LZW
+Comparing files large(expanded).txt and LARGE(EXPANDED)(EXPANDED).TXT
+Comparing files large.lzw and LARGE(EXPANDED).LZW
+Comparing files large.txt and LARGE(EXPANDED).TXT
+FC: no differences encountered
+
+Comparing files Lego-big(expanded).gif and LEGO-BIG(EXPANDED)(EXPANDED).GIF
+Comparing files Lego-big.gif and LEGO-BIG(EXPANDED).GIF
+FC: no differences encountered
+
+Comparing files Lego-big.lzw and LEGO-BIG(EXPANDED).LZW
+Comparing files medium(expanded).txt and MEDIUM(EXPANDED)(EXPANDED).TXT
+Comparing files medium.lzw and MEDIUM(EXPANDED).LZW
+Comparing files medium.txt and MEDIUM(EXPANDED).TXT
+FC: no differences encountered
+
+Comparing files texts(expanded).tar and TEXTS(EXPANDED)(EXPANDED).TAR
+Comparing files texts.lzw and TEXTS(EXPANDED).LZW
+Comparing files texts.tar and TEXTS(EXPANDED).TAR
+FC: no differences encountered
+
+Comparing files wacky(expanded).bmp and WACKY(EXPANDED)(EXPANDED).BMP
+Comparing files wacky.bmp and WACKY(EXPANDED).BMP
+FC: no differences encountered
+
+Comparing files wacky.lzw and WACKY(EXPANDED).LZW
+Comparing files winnt256(expanded).bmp and WINNT256(EXPANDED)(EXPANDED).BMP
+Comparing files winnt256.bmp and WINNT256(EXPANDED).BMP
+FC: no differences encountered
+
+Comparing files winnt256.lzw and WINNT256(EXPANDED).LZW
