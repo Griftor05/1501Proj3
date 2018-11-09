@@ -137,57 +137,83 @@ public class LZWmod {
 
         while(true){
             try{
-                readIn = BinaryStdIn.readInt(W);
+                if(!tablefull) {
+                    readIn = BinaryStdIn.readInt(W);
 
-                // Need to get the corresponding word from the array
-                if(readIn == counter){
-                    // Then the word is equal to the word plus the first letter of itself
-                    toWrite = toRemember;
-                    toWrite = toWrite + toWrite.substring(0, 1);
-                }
-                else if(readIn < counter){
-                    // Otherwise, the word is just gotten from the array
-                    toWrite = st[readIn];
+                    // Need to get the corresponding word from the array
+                    if (readIn == counter) {
+                        // Then the word is equal to the word plus the first letter of itself
+                        toWrite = toRemember;
+                        toWrite = toWrite + toWrite.substring(0, 1);
+                    } else if (readIn < counter) {
+                        // Otherwise, the word is just gotten from the array
+                        toWrite = st[readIn];
+                    } else {
+                        BinaryStdOut.flush();
+                        throw new RuntimeException("Something is decoding funky.");
+                    }
+                    // In either case, first add the old string to the array
+                    if (!tablefull) {
+                        st[counter++] = toRemember + toWrite.substring(0, 1);
+                    }
+
+                    // Then write out the new string
+                    BinaryStdOut.write(toWrite);
+                    // Then do the reset
+                    toRemember = toWrite;
+
+                    // Also check if counter has gotten too big
+                    if (Math.log(counter + 2) / Math.log(2) == W) {
+                        W++;
+                    }
+                    if (W > maxW) {
+                        W--;
+                    }
+                    if (counter + 3 == L) {
+                        tablefull = true;
+                        // We'll need to stick in our last value if we're done here
+                        if(!reset){
+                            readIn = BinaryStdIn.readInt(W);
+
+                            // Need to get the corresponding word from the array
+                            if (readIn == counter) {
+                                // Then the word is equal to the word plus the first letter of itself
+                                toWrite = toRemember;
+                                toWrite = toWrite + toWrite.substring(0, 1);
+                            } else if (readIn < counter) {
+                                // Otherwise, the word is just gotten from the array
+                                toWrite = st[readIn];
+                            }
+                            // Plug in that last value, write it out, and we should be good, I think.
+                            st[counter++] = toRemember + toWrite.substring(0, 1);
+
+                            BinaryStdOut.write(toWrite);
+                            toRemember = toWrite;
+                        }
+                    }
+                    if (tablefull && reset) {
+                        // Let's see what happens if we don't read in an extra word
+                        W = startW;
+                        tablefull = false;
+                        st = new String[L];
+
+                        for (counter = 0; counter < 256; counter++) {
+                            st[counter] = Character.toString((char) counter);
+                        }
+                        // NoChar == 256
+                        st[counter++] = "__NULL__";
+
+                        int nextin = BinaryStdIn.readInt(W);
+                        toRemember = st[nextin];
+                        BinaryStdOut.write(toRemember);
+                    }
                 }
                 else{
-                    BinaryStdOut.flush();
-                    throw new RuntimeException("Something is decoding funky.");
-                }
-                // In either case, first add the old string to the array
-                if(!tablefull) {
-                    st[counter++] = toRemember + toWrite.substring(0, 1);
-                }
+                    // No need to do all that extra junk
+                    readIn = BinaryStdIn.readInt(W);
 
-                // Then write out the new string
-                BinaryStdOut.write(toWrite);
-                // Then do the reset
-                toRemember = toWrite;
-
-                // Also check if counter has gotten too big
-                if(Math.log(counter + 2) / Math.log(2) == W){
-                    W++;
-                }
-                if(W > maxW){
-                    W--;
-                }
-                if(counter + 3 == L){
-                    tablefull = true;
-                }
-                if(tablefull && reset){
-                    // Let's see what happens if we don't read in an extra word
-                    W = startW;
-                    tablefull = false;
-                    st = new String[L];
-
-                    for(counter = 0; counter < 256; counter++){
-                        st[counter] = Character.toString((char)counter);
-                    }
-                    // NoChar == 256
-                    st[counter++] = "__NULL__";
-
-                    int nextin = BinaryStdIn.readInt(W);
-                    toRemember = st[nextin];
-                    BinaryStdOut.write(toRemember);
+                    toWrite = st[readIn];
+                    BinaryStdOut.write(toWrite);
                 }
             }
             catch(NoSuchElementException e){

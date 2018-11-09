@@ -1,12 +1,8 @@
 import os
 
-os.system("python cleaner.py")
 os.chdir("TestFiles")
 testNames = os.listdir(".");
-os.chdir("..")
-os.system("python fullSuit.py")
 
-os.chdir("TestFiles")
 for filename in testNames:
 	name1 = filename
 	nameStripped = filename[:-4]

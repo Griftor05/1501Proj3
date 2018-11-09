@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d1fc60db-99bd-4cda-8f45-22ee9d4515d7" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TestFiles/Lego-big.lzw" beforeDir="false" afterPath="$PROJECT_DIR$/TestFiles/Lego-big.lzw" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TestFiles/all(expanded).tar" beforeDir="false" afterPath="$PROJECT_DIR$/TestFiles/all(expanded).tar" afterDir="false" />
@@ -11,9 +10,7 @@
       <change beforePath="$PROJECT_DIR$/TestFiles/bmps.lzw" beforeDir="false" afterPath="$PROJECT_DIR$/TestFiles/bmps.lzw" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TestFiles/code.lzw" beforeDir="false" afterPath="$PROJECT_DIR$/TestFiles/code.lzw" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TestFiles/code2.lzw" beforeDir="false" afterPath="$PROJECT_DIR$/TestFiles/code2.lzw" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestFiles/edit(expanded).exe" beforeDir="false" afterPath="$PROJECT_DIR$/TestFiles/edit(expanded).exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TestFiles/edit.lzw" beforeDir="false" afterPath="$PROJECT_DIR$/TestFiles/edit.lzw" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestFiles/frosty(expanded).jpg" beforeDir="false" afterPath="$PROJECT_DIR$/TestFiles/frosty(expanded).jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TestFiles/frosty.lzw" beforeDir="false" afterPath="$PROJECT_DIR$/TestFiles/frosty.lzw" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TestFiles/gone_fishing.lzw" beforeDir="false" afterPath="$PROJECT_DIR$/TestFiles/gone_fishing.lzw" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TestFiles/large(expanded).txt" beforeDir="false" afterPath="$PROJECT_DIR$/TestFiles/large(expanded).txt" afterDir="false" />
@@ -37,7 +34,7 @@
     <session id="656779428">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="4" />
           <entry key="project.open.time.12" value="1" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.52" value="1" />
@@ -62,12 +59,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="13927" />
+          <entry key="java" value="14759" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="13927" />
+          <entry key="JAVA" value="14759" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -81,10 +78,9 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/LZWmod.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="27" column="34" selection-start-line="27" selection-start-column="34" selection-end-line="27" selection-end-column="34" />
+            <state relative-caret-position="647">
+              <caret line="190" column="49" selection-start-line="190" selection-start-column="49" selection-end-line="190" selection-end-column="49" />
               <folding>
-                <element signature="method#compress#0;class#LZWmod#0" />
                 <element signature="e#1370#1379#0" expanded="true" />
               </folding>
             </state>
@@ -264,16 +260,15 @@
       <workItem from="1541347787160" duration="30549000" />
       <workItem from="1541688160869" duration="7041000" />
       <workItem from="1541707016594" duration="3423000" />
-      <workItem from="1541748373424" duration="4848000" />
+      <workItem from="1541748373424" duration="8251000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="90818000" />
+    <option name="totallyTimeSpent" value="94221000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16577825" />
       <window_info id="Structure" order="1" weight="0.25" />
@@ -291,7 +286,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.31780168" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.3177874" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="11" />
       <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
@@ -365,10 +360,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/LZWmod.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="27" column="34" selection-start-line="27" selection-start-column="34" selection-end-line="27" selection-end-column="34" />
+        <state relative-caret-position="647">
+          <caret line="190" column="49" selection-start-line="190" selection-start-column="49" selection-end-line="190" selection-end-column="49" />
           <folding>
-            <element signature="method#compress#0;class#LZWmod#0" />
             <element signature="e#1370#1379#0" expanded="true" />
           </folding>
         </state>
